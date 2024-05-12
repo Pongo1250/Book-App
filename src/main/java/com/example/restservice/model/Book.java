@@ -1,5 +1,8 @@
 package com.example.restservice.model;
 
+/**
+ * represents data for a Book
+ */
 public class Book {
 
     public Book (int id, String title, String author, int publicationYear) {

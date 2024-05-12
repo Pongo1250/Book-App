@@ -1,7 +1,6 @@
 package com.example.restservice;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.example.restservice.domain.BookH2Service;
 import com.example.restservice.model.Book;
@@ -12,12 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 public class BookController {
+
     BookH2Service h2Service = new BookH2Service();
 
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
-
-    @GetMapping("/createBook")
+    /**
+     * add a book to the database
+     * @param title
+     * @param author
+     * @param publicationYear
+     * @return
+     */
+    @GetMapping("/book-app/createBook")
     public boolean createBook(@RequestParam(value = "title") String title,
                                @RequestParam(value = "author") String author,
                                @RequestParam(value = "publicationYear") int publicationYear) {
@@ -27,16 +31,34 @@ public class BookController {
         return h2Service.addBook(newBookEntry);
     }
 
-    @GetMapping("/retrieveAllBooks")
+    /**
+     * retrieve all books from database
+     * @return
+     */
+    @GetMapping("/book-app/retrieveAllBooks")
     public List<Book> retrieveAllBooks() {
         return h2Service.retrieveAllBooks();
     }
-    @GetMapping("/deleteBook")
+
+    /**
+     * delete a book from the database using an id
+     * @param id
+     * @return
+     */
+    @GetMapping("/book-app/deleteBook")
     public boolean deleteBook(@RequestParam(value = "id") int id) {
         return h2Service.deleteBook(id);
     }
 
-    @GetMapping("/updateBook")
+    /**
+     * update a book in the database by id
+     * @param id
+     * @param title
+     * @param author
+     * @param publicationYear
+     * @return
+     */
+    @GetMapping("/book-app/updateBook")
     public boolean updateBook(@RequestParam(value = "id") int id,
                               @RequestParam(value = "title") String title,
                               @RequestParam(value = "author") String author,
@@ -44,7 +66,12 @@ public class BookController {
         return h2Service.updateBook(id, title, author, publicationYear);
     }
 
-    @GetMapping("/retrieveBook")
+    /**
+     * retrieve a book from the database by id
+     * @param id
+     * @return
+     */
+    @GetMapping("/book-app/retrieveBook")
     public Book retrieveBook(@RequestParam(value = "id") int id) {
         return h2Service.retrieveBook(id);
     }
