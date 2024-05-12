@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Call Example</title>
+</head>
+<body>
+
+<h1>Books catalog</h1>
+
+<p>Click the button below to make an API call:
+
+<p>CreateBook</p>
+<form id="createBook">
+    <div>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+    </div>
+    <div>
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+    </div>
+    <div>
+        <label for="publicationYear">PublicationYear:</label>
+        <input type="number" id="publicationYear" name="publicationYear" required>
+    </div>
+    <button type="submit" id="createBookButton">Submit</button>
+</form>
+
+
+
+<button id="retrieveAllBooks">retrieveAllBooks</button>
+
+<div id="result"></div>
+
+
+
+<script>
+
+    document.getElementById('createBookButton').addEventListener('click', createBook);
+
+    function createBook(formData) {
+      const title = formData.get('title');
+       const author = formData.get('author');
+        const publicationYear = formData.get('publicationYear');
+        const createBookEndpoint = "http://localhost:8080/book-app/createBook?title=" +encodeURIComponent(title)+"&author=" +encodeURIComponent(author) + "&publicationYear=" +encodeURIComponent(publicationYear)
+      fetch(createBookEndpoint)
+      .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('result').innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+
+
+
+
+
+    document.getElementById('retrieveAllBooks').addEventListener('click', retrieveAllBooks);
+
+    function retrieveAllBooks() {
+      fetch('http://localhost:8080/book-app/retrieveAllBooks')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('result').innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+</script>
+
+</body>
+</html>
